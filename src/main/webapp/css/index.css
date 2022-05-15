@@ -1,0 +1,49 @@
+.bg-dblue {
+  background-color: #143367;
+}
+
+.bg-sblue {
+  background-color: #0f5f77;
+}
+
+.bg-blue {
+  background-color: #0b0e80;
+}
+
+.bg-dgreen {
+  background-color: #043f3f;
+}
+
+.corners-top {
+  border-top-left-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
+}
+
+.corners-bottom {
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
+}
+
+.corners {
+  border-radius: 0.6rem;
+}
+
+.bg-concepts {
+    background-image: url('../img/bg.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    min-height: 100vh;
+    position: relative;
+}
+
+.hero {
+    background-image: url('../img/universo.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    min-height: 100vh;
+    position: relative;
+  }
