@@ -38,7 +38,7 @@ public class Normalizacion {
     las transiciónes que se deben evaluar*/
     public void guardarSigma(String sigamString, Gramatica g){
         DefaultDirectedGraph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        String[] definiciones = sigamString.split("\n");
+        String[] definiciones = sigamString.split(" ");
         Map<String, Set<Palabra>> sigma = g.getSigma();
         for(String def : definiciones){
             String noTerminalDef = def.substring(0, 1);

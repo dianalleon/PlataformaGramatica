@@ -12,9 +12,24 @@
 <jsp:useBean id="negocio" class="controlador.Normalizacion" scope="session"></jsp:useBean>
 <% 
 
-    Gramatica gramatica = new Gramatica();
+    Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
     Normalizacion normalizacion = new Normalizacion();
 
+    String formulario = (String)request.getAttribute("msg");
+
+    String inicial = "A";
+    String terminales = "0,1,2";
+    String noTerminales = "A,B,C,D,E,F,G,H";
+    String sigma = "A->B1CD/GF/BDG/1"+
+                        " B->CDE/DCE/F1/0/λ"+
+                        " C->DE/E/F/DE0E1/2"+
+                        " D->B/CDE/DD1/0"+
+                        " E->B1B2B/DE2/1"+
+                        " F->DBEE2/F1/2"+
+                        " H->BCD1/2";
+
+    String sigma2 = (String) request.getSession().getAttribute("sigma");
+    
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -282,26 +297,26 @@
                             <h5 class="card-title">Registrar Gramatica</h5>
                             
                             <form id="frmGramatica" name="frmGramatica" 
-                              action="javascript:enviar();" method="post">
+                              action="GuardarGramatica.do" method="post">
+
+                              <div class="form-group">
+                                    <label for="variableInicial" class="form-label"> Variable Inicial: </label>
+                                    <input type="text" name="variableInicial" id="variableInicial" placeholder="Digite su variable Inicial" required class="form-control" value="<%= inicial!=null?inicial:"" %>">
+                                </div>
 
                                 <div class="form-group">
-                                    <label for="variableTerminal"  class="form-label">Variable terminal: </label>
-                                    <input type="text" name="variableTerminal" id="variableTerminal" placeholder="Digite su variable terminal" required class="form-control">
+                                    <label for="variableTerminal"  class="form-label">Variables terminales: </label>
+                                    <input type="text" name="variableTerminal" id="variableTerminal" placeholder="Digite su variable terminal" required class="form-control" value="<%= terminales!=null?terminales:"" %>">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="variablesNoTerminales" class="form-label">Variables no terminales: </label>
-                                    <input type="text" name="variablesNoTerminales" id="variablesNoTerminales" placeholder="Digite sus variables no terminales" required class="form-control">
+                                    <input type="text" name="variablesNoTerminales" id="variablesNoTerminales" placeholder="Digite sus variables no terminales" required class="form-control" value="<%= noTerminales!=null?noTerminales:"" %>">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="variableInicial" class="form-label"> Variable Inicial: </label>
-                                    <input type="text" name="variableInicial" id="variableInicial" placeholder="Digite su variable Inicial" required class="form-control">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="producciones" class="form-label">Producciones: </label>
-                                    <input type="text" name="producciones" id="producciones" placeholder="Digite las Producciones" required class="form-control">
+                                    <label for="producciones" class="form-label">Sigma: </label>
+                                    <input type="text" name="producciones" id="producciones" placeholder="Digite las Producciones" required class="form-control" value="<%= sigma!=null?sigma:"" %>">
                                 </div>
                                 
                                 <div class="form-group">
@@ -318,7 +333,10 @@
                 <div class="col-4">
                 
                     <div id="opcionesGramatica">
-                        <div id="EliminarVariablesInutiles"> </div>
+                        <div id="eliminarVariablesInutilesId"> 
+                             <%=sigma2!=null? sigma2 : ""%> 
+                            <%-- <%=formulario!=null? formulario : ""%> --%>
+                        </div>
                         <div id="EliminarVariablesInalcanzables"> </div> 
                         <div id="EliminarVariablesNulas"> </div> 
                         <div id="EliminarVariablesUnitarias"> </div>
@@ -350,6 +368,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+
+       
     
         $(function(){
             
@@ -360,19 +380,28 @@
         }
 
         function eliminarVariablesInutiles(){
-            
-            let terminales = $('#variableTerminal').val();
-            let noTerminales = $('#variablesNoTerminales').val();
-            let inicial = $('#variableInicial').val();
-            let sigma = $('#producciones').val();
 
-            console.log("terminales= "+terminales+" noTerminales= "+noTerminales+"sigma="+ sigma+" inicial="+inicial);
-
-            if(terminales!=null && noTerminales!=null && inicial!=null && sigma!=null){
-               
-                console.log("terminales= "+terminales+" noTerminales= "+noTerminales+"sigma="+ sigma+" inicial="+inicial);
-                
+            <%
+            if(gramatica!=null){
+                %> 
+                console.log("GRAMATICA NOTTTTTTTTTTTTTTTTTT NULAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                <%
+                while(normalizacion.existenInutiles(gramatica)){
+                    normalizacion.eliminarInutiles(gramatica);
+                }
+                sigma = gramatica.getSigma().toString();
+                %> 
+                $('#eliminarVariablesInutilesId').append(<%=sigma%>);
+                console.log(<%=sigma%>);
+                <%
             }
+            else {
+                %> 
+                console.log("GRAMATICA NULAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                <%
+            }
+            %>
+
 
         }
     
