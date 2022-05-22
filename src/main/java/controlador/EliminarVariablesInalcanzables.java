@@ -6,19 +6,19 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Gramatica;
 
-
 /**
  *
  * @author User
  */
-public class GuardarGramatica extends HttpServlet {
+@WebServlet(name = "EliminarVariablesInalcanzables", urlPatterns = {"/EliminarVariablesInalcanzables.do"})
+public class EliminarVariablesInalcanzables extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,40 +31,22 @@ public class GuardarGramatica extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       
         
-        System.out.println("GuardarGramatica.do");
+        System.out.println("EliminarVariablesInalcanzables.do");
         
         Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
         
-        if(normalizacion==null){
-            normalizacion = new Normalizacion();
+        
+        if(normalizacion!=null && gramatica!=null){
+            while(normalizacion.existenInalacanzables(gramatica, gramatica.getInicial())){
+                normalizacion.eliminarInalacanzables(gramatica, gramatica.getInicial());
+            }
         }
         
-        if(gramatica==null){
-            String terminales = request.getParameter("variableTerminal");
-            String noTerminales = request.getParameter("variablesNoTerminales");
-            String inicial = request.getParameter("variableInicial");
-            String sigma = request.getParameter("producciones");
-
-            gramatica = normalizacion.crearGramatica(terminales, noTerminales, inicial, sigma);
-            System.out.println("//////////////////////////////////////////////////////////////////");
-            /*System.out.println("inicial="+gramatica.getInicial());
-            System.out.println("no terminales="+gramatica.getNoTerminales().toString());
-            System.out.println("terminales="+gramatica.getTerminales().toString());
-            System.out.println("sigma="+gramatica.getSigma().toString());*/
-            System.out.println("gramatica:");
-            System.out.println(""+gramatica.toString());
-            //System.out.println("sigma="+gramatica.sigmaToString());
-            System.out.println("//////////////////////////////////////////////////////////////////");
-        }
-        
-        
-        //request.getSession().setAttribute("sigma", gramatica.getSigma().toString());
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
-        
-        
         
         request.getRequestDispatcher("./index.jsp").forward(request, response);
         

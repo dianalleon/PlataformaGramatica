@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -185,12 +186,17 @@ public class Normalizacion {
             if(!sigma.containsKey(noTerminal)){
                 for (String key : keys) {
                     for (int i = 0; i<sigma.get(key).size(); i++) {
-                        if(sigma.get(key).toArray(new Palabra[0])[i].getPalabra().contains(noTerminal)){
-                            sigma.get(key).remove(sigma.get(key).toArray(new Palabra[0])[i]);
-                            g.getNoTerminales().remove(noTerminal);
-                            g.getGraph().removeVertex(noTerminal);
-                            i--;
-                        }
+                        String palabra = sigma.get(key).toArray(new Palabra[0])[i].getPalabra();
+                        if(palabra!=null){
+                            
+                            if(palabra.contains(noTerminal)){
+                            
+                                sigma.get(key).remove(sigma.get(key).toArray(new Palabra[0])[i]);
+                                g.getNoTerminales().remove(noTerminal);
+                                g.getGraph().removeVertex(noTerminal);
+                                i--;
+                            }
+                        } 
                     }
                 }
             }
@@ -401,19 +407,28 @@ public class Normalizacion {
         Map<String, Set<Palabra>> sigma = g.getSigma();
         List<String> keys = g.getNoTerminales();
         for (String key : keys) {
-            for (Palabra palabra : sigma.get(key)) {
-                if(!graph.containsVertex(key)){
-                    graph.addVertex(key);
-                }
-                for(String s : palabra.getSimbolos()){
-                    if(!graph.containsEdge(key, s)){
-                        if(!graph.containsVertex(s)){
-                            graph.addVertex(s);
+            Set<Palabra> aux1 = sigma.get(key);
+            if(aux1!=null && aux1.size()>0){
+                
+                Iterator<Palabra> aux2 = aux1.iterator();
+                int fin = sigma.get(key).size();
+                for (int it=0; it<fin; it++) {
+                    Palabra palabra = aux2.next();
+                    if(!graph.containsVertex(key)){
+                        graph.addVertex(key);
+                    }
+                    for(String s : palabra.getSimbolos()){
+                        if(!graph.containsEdge(key, s)){
+                            if(!graph.containsVertex(s)){
+                                graph.addVertex(s);
+                            }
+                            graph.addEdge(key, s); 
                         }
-                        graph.addEdge(key, s); 
                     }
                 }
+                
             }
+            
         }
         g.setGraph(graph);
     }

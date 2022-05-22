@@ -4,9 +4,25 @@
         <servlet-name>GuardarGramatica</servlet-name>
         <servlet-class>controlador.GuardarGramatica</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EliminarVariables</servlet-name>
+        <servlet-class>EliminarVariables</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarVariablesInutiles</servlet-name>
+        <servlet-class>controlador.EliminarVariablesInutiles</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GuardarGramatica</servlet-name>
         <url-pattern>/GuardarGramatica.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarVariables</servlet-name>
+        <url-pattern>/EliminarVariables.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarVariablesInutiles</servlet-name>
+        <url-pattern>/EliminarVariablesInutiles.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

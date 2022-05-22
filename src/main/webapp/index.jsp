@@ -13,9 +13,7 @@
 <% 
 
     Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
-    Normalizacion normalizacion = new Normalizacion();
-
-    String formulario = (String)request.getAttribute("msg");
+    Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
 
     String inicial = "A";
     String terminales = "0,1,2";
@@ -28,7 +26,13 @@
                         " F->DBEE2/F1/2"+
                         " H->BCD1/2";
 
-    String sigma2 = (String) request.getSession().getAttribute("sigma");
+    //String sigma2 = (String) request.getSession().getAttribute("sigma");
+
+    /*if(gramatica!=null)
+        System.out.println(":index.jsp -------> gramatica.getSigma()="+gramatica.getSigma().toString());
+    else
+        System.out.println("gramatica nula");*/
+
     
 %>
 <!DOCTYPE html>
@@ -334,8 +338,9 @@
                 
                     <div id="opcionesGramatica">
                         <div id="eliminarVariablesInutilesId"> 
-                             <%=sigma2!=null? sigma2 : ""%> 
-                            <%-- <%=formulario!=null? formulario : ""%> --%>
+                            <%-- <%=sigma2!=null? sigma2 : ""%>  --%>
+                            <%=gramatica!=null && gramatica.sigmaToString()!=null? gramatica.sigmaToString() : ""%>
+                            <%-- <%=gramatica!=null && gramatica.getSigma().toString()!=null? gramatica.getSigma().toString() : ""%> --%>
                         </div>
                         <div id="EliminarVariablesInalcanzables"> </div> 
                         <div id="EliminarVariablesNulas"> </div> 
@@ -345,11 +350,25 @@
                 </div>
 
                 <div class="col-4 ">
-                    <button class="btn btn-primary d-block" onclick="javascript:eliminarVariablesInutiles();">Eliminar variables Inutiles</button>
-                    <button class="btn btn-primary d-block mt-2">Eliminar variables Inalcanzables</button>
-                    <button class="btn btn-primary d-block mt-2">Eliminar variables Nulas</button>
-                    <button class="btn btn-primary d-block mt-2">Eliminar variables Unitarias</button>
+                
+                    <form action="EliminarVariablesInutiles.do" method="post">
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inutiles">
+                    </form>
+
+                    <form action="EliminarVariablesInalcanzables.do" method="post">
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inalcanzables">
+                    </form>
+                
                 </div>
+
+                <%-- <form action="EliminarVariablesInutiles.do" method="post">
+                    
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inutiles">
+                        <button class="btn btn-primary d-block mt-2">Eliminar variables Inalcanzables</button>
+                        <button class="btn btn-primary d-block mt-2">Eliminar variables Nulas</button>
+                        <button class="btn btn-primary d-block mt-2">Eliminar variables Unitarias</button>
+                    
+                </form> --%>
 
             </div>
         </div>
@@ -369,42 +388,21 @@
 
     <script>
 
-       
+        function eliminarInutiles(){
+        
+        }
     
         $(function(){
             
+            
+
         });
 
-        function enviar(){
-            console.log("enviado");
+        
+        function nada(){
+            console.log("hola soy nada");
         }
 
-        function eliminarVariablesInutiles(){
-
-            <%
-            if(gramatica!=null){
-                %> 
-                console.log("GRAMATICA NOTTTTTTTTTTTTTTTTTT NULAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                <%
-                while(normalizacion.existenInutiles(gramatica)){
-                    normalizacion.eliminarInutiles(gramatica);
-                }
-                sigma = gramatica.getSigma().toString();
-                %> 
-                $('#eliminarVariablesInutilesId').append(<%=sigma%>);
-                console.log(<%=sigma%>);
-                <%
-            }
-            else {
-                %> 
-                console.log("GRAMATICA NULAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                <%
-            }
-            %>
-
-
-        }
-    
     </script>
 
 </body>

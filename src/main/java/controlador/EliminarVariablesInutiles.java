@@ -6,19 +6,17 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Gramatica;
 
-
 /**
  *
  * @author User
  */
-public class GuardarGramatica extends HttpServlet {
+public class EliminarVariablesInutiles extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,44 +29,34 @@ public class GuardarGramatica extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         
-        System.out.println("GuardarGramatica.do");
+        System.out.println("EmininarVariablesInutiles.do");
         
         Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
         
-        if(normalizacion==null){
-            normalizacion = new Normalizacion();
-        }
-        
-        if(gramatica==null){
-            String terminales = request.getParameter("variableTerminal");
-            String noTerminales = request.getParameter("variablesNoTerminales");
-            String inicial = request.getParameter("variableInicial");
-            String sigma = request.getParameter("producciones");
-
-            gramatica = normalizacion.crearGramatica(terminales, noTerminales, inicial, sigma);
+        if(normalizacion!=null && gramatica!=null){
+            
             System.out.println("//////////////////////////////////////////////////////////////////");
-            /*System.out.println("inicial="+gramatica.getInicial());
+            System.out.println("inicial="+gramatica.getInicial());
             System.out.println("no terminales="+gramatica.getNoTerminales().toString());
             System.out.println("terminales="+gramatica.getTerminales().toString());
-            System.out.println("sigma="+gramatica.getSigma().toString());*/
-            System.out.println("gramatica:");
-            System.out.println(""+gramatica.toString());
-            //System.out.println("sigma="+gramatica.sigmaToString());
+            System.out.println("sigma="+gramatica.getSigma().toString());
             System.out.println("//////////////////////////////////////////////////////////////////");
+            
+            while(normalizacion.existenInutiles(gramatica)){
+                normalizacion.eliminarInutiles(gramatica);
+            }
         }
         
-        
-        //request.getSession().setAttribute("sigma", gramatica.getSigma().toString());
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
-        
-        
         
         request.getRequestDispatcher("./index.jsp").forward(request, response);
         
     }
+   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -4,6 +4,7 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,7 +109,7 @@ public class Gramatica {
     }
 
     public String sigmaToString(){
-        StringBuilder s = new StringBuilder();
+        /*StringBuilder s = new StringBuilder();
         for (String key : this.noTerminales) {
             s.append(key+" -> ");
             Set<Palabra> palabras = this.sigma.get(key);
@@ -116,9 +117,24 @@ public class Gramatica {
                 s.append(palabra.getPalabra()+"/");
             }
             s.deleteCharAt(s.length()-1);
-            s.append("\n");
+            s.append("<br>");
         }
-        return s.toString();
+        return s.toString();*/
+        StringBuilder msg = new StringBuilder();
+        List<String> keys = this.noTerminales;
+        SortedSet<String> sortedKeys = new TreeSet<>();
+        sortedKeys.addAll(keys);
+        for (String key : keys) {
+            Set<Palabra> palabras = this.sigma.get(key);
+            if(palabras!=null){
+                msg.append(key+" -> ");
+                for (Palabra palabra : palabras) {
+                    msg.append(palabra.getPalabra()+"/");
+                }
+                msg.append("<br>");
+            }
+        }
+        return msg.toString();
     }
 
 
