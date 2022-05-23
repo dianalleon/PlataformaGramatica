@@ -1,6 +1,8 @@
-modelo\Palabra.class
+controlador\EliminarVariablesUnitarias.class
 controlador\EliminarVariablesInutiles.class
 controlador\GuardarGramatica.class
 controlador\EliminarVariablesInalcanzables.class
+controlador\EliminarVariablesNulas.class
 controlador\Normalizacion.class
+modelo\Palabra.class
 modelo\Gramatica.class

@@ -237,10 +237,10 @@ public class Normalizacion {
 /*Evalua el sigma mirando si existen las variables Nulas*/
     public boolean existenNulas(Gramatica g){
         DefaultDirectedGraph<String, DefaultEdge> graph = g.getGraph();
-        if(graph.containsVertex("λ")){
+        if(graph.containsVertex("&")){
             Set<String> nodos = graph.vertexSet();
             for (String vertex : nodos) {
-                if(graph.containsEdge(vertex, "λ")){
+                if(graph.containsEdge(vertex, "&")){
                     return true;
                 }
             }
@@ -254,13 +254,13 @@ public class Normalizacion {
         DefaultDirectedGraph<String, DefaultEdge> graph = g.getGraph();
         Map<String, Set<Palabra>> sigma = g.getSigma();
         Set<String> keys = sigma.keySet();
-        Palabra vacia = new Palabra("λ");
-        if(graph.containsVertex("λ")){
+        Palabra vacia = new Palabra("&");
+        if(graph.containsVertex("&")){
             Set<String> nodos = graph.vertexSet();
             for (String vertex : nodos) {
-                if(graph.containsEdge(vertex, "λ")){
+                if(graph.containsEdge(vertex, "&")){
                     sigma.get(vertex).remove(vacia);
-                    graph.removeEdge(vertex, "λ");
+                    graph.removeEdge(vertex, "&");
                     for (String key : keys) {
                         for(int i = 0; i<sigma.get(key).size(); i++){
                             Palabra palabra = sigma.get(key).toArray(new Palabra[0])[i];
@@ -280,8 +280,8 @@ public class Normalizacion {
                                     }
                                 }else if(palabra.length()==1){
                                     sigma.get(key).add(vacia);
-                                    if(!graph.containsEdge(key, "λ")){
-                                        graph.addEdge(key, "λ");
+                                    if(!graph.containsEdge(key, "&")){
+                                        graph.addEdge(key, "&");
                                     }
                                 }
                             }

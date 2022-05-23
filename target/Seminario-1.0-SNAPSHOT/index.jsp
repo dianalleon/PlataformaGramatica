@@ -19,7 +19,7 @@
     String terminales = "0,1,2";
     String noTerminales = "A,B,C,D,E,F,G,H";
     String sigma = "A->B1CD/GF/BDG/1"+
-                        " B->CDE/DCE/F1/0/λ"+
+                        " B->CDE/DCE/F1/0/&"+
                         " C->DE/E/F/DE0E1/2"+
                         " D->B/CDE/DD1/0"+
                         " E->B1B2B/DE2/1"+
@@ -295,13 +295,13 @@
         <div class="container">
             <div class="row">
                 
-                <div class="col-4">
+                <div class="col-4"  >
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">Registrar Gramatica</h5>
                             
                             <form id="frmGramatica" name="frmGramatica" 
-                              action="GuardarGramatica.do" method="post">
+                              action="GuardarGramatica.do" method="post" >
 
                               <div class="form-group">
                                     <label for="variableInicial" class="form-label"> Variable Inicial: </label>
@@ -334,13 +334,15 @@
                 </div>
 
 
-                <div class="col-4">
+                <div class="col-6">
                 
                     <div id="opcionesGramatica">
                         <div id="eliminarVariablesInutilesId"> 
+                            <p>
                             <%-- <%=sigma2!=null? sigma2 : ""%>  --%>
                             <%=gramatica!=null && gramatica.sigmaToString()!=null? gramatica.sigmaToString() : ""%>
                             <%-- <%=gramatica!=null && gramatica.getSigma().toString()!=null? gramatica.getSigma().toString() : ""%> --%>
+                            </p>
                         </div>
                         <div id="EliminarVariablesInalcanzables"> </div> 
                         <div id="EliminarVariablesNulas"> </div> 
@@ -349,7 +351,7 @@
                 
                 </div>
 
-                <div class="col-4 ">
+                <div class="col-2 ">
                 
                     <form action="EliminarVariablesInutiles.do" method="post">
                         <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inutiles">
@@ -357,6 +359,14 @@
 
                     <form action="EliminarVariablesInalcanzables.do" method="post">
                         <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inalcanzables">
+                    </form>
+
+                    <form action="EliminarVariablesNulas.do" method="post">
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Nulas">
+                    </form>
+
+                    <form action="EliminarVariablesUnitarias.do" method="post">
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Unitarias">
                     </form>
                 
                 </div>
@@ -398,10 +408,6 @@
 
         });
 
-        
-        function nada(){
-            console.log("hola soy nada");
-        }
 
     </script>
 

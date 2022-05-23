@@ -12,6 +12,14 @@
         <servlet-name>EliminarVariablesInutiles</servlet-name>
         <servlet-class>controlador.EliminarVariablesInutiles</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EliminarVaribalesNulas</servlet-name>
+        <servlet-class>controlador.EliminarVaribalesNulas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarVariablesNulas</servlet-name>
+        <servlet-class>controlador.EliminarVariablesNulas</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GuardarGramatica</servlet-name>
         <url-pattern>/GuardarGramatica.do</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>EliminarVariablesInutiles</servlet-name>
         <url-pattern>/EliminarVariablesInutiles.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarVaribalesNulas</servlet-name>
+        <url-pattern>/EliminarVaribalesNulas.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarVariablesNulas</servlet-name>
+        <url-pattern>/EliminarVariablesNulas.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
