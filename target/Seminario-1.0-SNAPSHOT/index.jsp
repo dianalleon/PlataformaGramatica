@@ -25,15 +25,8 @@
                         " E->B1B2B/DE2/1"+
                         " F->DBEE2/F1/2"+
                         " H->BCD1/2";
-
-    //String sigma2 = (String) request.getSession().getAttribute("sigma");
-
-    /*if(gramatica!=null)
-        System.out.println(":index.jsp -------> gramatica.getSigma()="+gramatica.getSigma().toString());
-    else
-        System.out.println("gramatica nula");*/
-
-    
+    String alert = (String) request.getAttribute("message");
+    System.out.println(":::index.jsp -> Alert= "+alert);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -368,6 +361,10 @@
                     <form action="EliminarVariablesUnitarias.do" method="post">
                         <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Unitarias">
                     </form>
+
+                    <form action="AplicarChomsky.do" method="post">
+                        <input type="submit" class="btn btn-primary d-block" value="Aplicar Chomsky">
+                    </form>
                 
                 </div>
 
@@ -398,18 +395,20 @@
 
     <script>
 
-        function eliminarInutiles(){
-        
-        }
-    
         $(function(){
-            
-            
 
         });
 
+        <% if(alert!=null){ %>
+
+        alert("<%=alert%>");
+        console.log("<%=alert%>");
+
+        <% } %>
 
     </script>
+
+
 
 </body>
 

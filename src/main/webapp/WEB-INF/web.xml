@@ -20,6 +20,10 @@
         <servlet-name>EliminarVariablesNulas</servlet-name>
         <servlet-class>controlador.EliminarVariablesNulas</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AplicarChomsky</servlet-name>
+        <servlet-class>controlador.AplicarChomsky</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GuardarGramatica</servlet-name>
         <url-pattern>/GuardarGramatica.do</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>EliminarVariablesNulas</servlet-name>
         <url-pattern>/EliminarVariablesNulas.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AplicarChomsky</servlet-name>
+        <url-pattern>/AplicarChomsky.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

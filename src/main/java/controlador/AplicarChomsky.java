@@ -7,7 +7,6 @@ package controlador;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +16,7 @@ import modelo.Gramatica;
  *
  * @author User
  */
-@WebServlet(name = "EliminarVariablesInalcanzables", urlPatterns = {"/EliminarVariablesInalcanzables.do"})
-public class EliminarVariablesInalcanzables extends HttpServlet {
+public class AplicarChomsky extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,24 +29,58 @@ public class EliminarVariablesInalcanzables extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        
-        System.out.println("EliminarVariablesInalcanzables.do");
-        
+        System.out.println("AplicarChomsky.do");
         Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
+        String alert = null;
         
-        
-        if(normalizacion!=null && gramatica!=null){
-            while(normalizacion.existenInalacanzables(gramatica, gramatica.getInicial())){
-                normalizacion.eliminarInalacanzables(gramatica, gramatica.getInicial());
+        if(normalizacion!=null && gramatica!=null) {
+            if(normalizacion.existenInutiles(gramatica))
+                alert = "Aún existen variables inutiles";
+            else if(normalizacion.existenInalacanzables(gramatica, gramatica.getInicial()))
+                alert = "Aún existen variables Inalcanzables";
+            else if(normalizacion.existenNulas(gramatica))
+                alert = "Aún existen variables Nulas";
+            else if(normalizacion.existenUnitarias(gramatica))
+                alert = "Aún existen variables Unitarias";
+            else {
+                gramatica = normalizacion.aplicarChomsky(gramatica);
             }
+        } 
+        else
+            System.out.println("normalizacion y gramaticas nulos");
+        /*
+        if(chomsky==null){
+            guardarGramaticaC();
         }
         
+        if(n.existenInutiles(chomsky)){
+            JOptionPane.showMessageDialog(this, "AUN EXISTEN VARIABLES INUTILES");
+        }
+        
+        if(n.existenInalacanzables(chomsky, chomsky.getInicial())){
+            JOptionPane.showMessageDialog(this, "AUN EXISTEN VARIABLES INALCANZABES");
+        }
+        
+        if(n.existenNulas(chomsky)){
+            JOptionPane.showMessageDialog(this, "AUN EXISTEN VARIABLES NULAS");
+        }
+        
+        if(n.existenUnitarias(chomsky)){
+            JOptionPane.showMessageDialog(this, "AUN EXISTEN VARIABLES UNITARIAS");
+        }
+        
+        if(!n.existenInutiles(chomsky) && !n.existenInalacanzables(chomsky, chomsky.getInicial()) && !n.existenNulas(chomsky) && !n.existenUnitarias(chomsky)&& !n.estaEnFNC(chomsky)){
+            chomsky = n.aplicarChomsky(chomsky);
+            actualizarCamposChomsky();
+            btnCargarGreybatch.setEnabled(true);
+        }
+        
+        */
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
+        request.setAttribute("message", alert);
         request.getRequestDispatcher("./index.jsp").forward(request, response);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
