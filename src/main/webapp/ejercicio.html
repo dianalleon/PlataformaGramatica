@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/style.css">
+
+  <title>Ejercicio</title>
+</head>
+<header>
+  <div class="container">
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Ejercicio de normalización de una gramatica</a>
+      </div>
+    </nav>
+  </div>
+</header>
+<body>
+  <br />
+  <br />
+  <br />
+  <h3>Ejercicio Guía para obtener FNC y FNG</h3>
+  <br />
+  <p>
+    Este documento tiene como fin mostrar la forma de obtener la Forma Normal
+    de Chomsk y (FNC) y la Forma Normal de Greibach (FNG) de una gramática
+    dada, mediante un ejercicio explicativo.
+  </p>
+  <br />
+  <p>La gramática en cuestión del ejercicio es la siguiente.</p>
+  <br />
+  <p>S → A|BCa|aDcd|EDF</p>
+  <p>A → aAb|c</p>
+  <p>B → CD|b|ECd|Ad</p>
+  <p>C → Cc|Bb|AaE|∅</p>
+  <p>D → aDd|Dd|∅</p>
+  <p>E → aaEB|EFG</p>
+  <p>F → aFd|d</p>
+  <br />
+  <p>
+    Durante este ejercicio, la gramática irá sufriendo modificaciones que en
+    algunos casos mantendrá a su lenguaje intacto y en otras lo alterará.
+  </p>
+  <h4>Forma intermedia de chomsky</h4>
+  <br />
+  <p>
+    Antes de empezar con el proceso para obtener la FNC de una gramática,
+    debemos dejar a dicha gramática en un estado intermedio, al cual podemos
+    llamar fonma intermedia de Chomsky, aunque no suele llamársele por ningún
+    nombre. De todas fonmas, en este paso, lo que vamos a tratar de obtener es
+    una gramática libre de símbolos inútiles, producciones e y producciones
+    unitarias. Cuando ya hayamos limpiado a nuestra gramática de estas cosas,
+    podremos empezar a obtener su FNC
+  </p>
+  <h4>Eliminando Variables Inutiles</h4>
+  <br />
+  <p>
+    En este paso, eliminaremos todos aquellos símbolos que sean inútiles. Hay
+    dos tipos de símbolos inútiles: los no generadores y los no alcanzables
+  </p>
+  <br />
+  <h4>Eliminado variables no generadores</h4>
+  <br />
+  <p>
+    Para eliminar símbolos no generadores, primero tratamos de identificar
+    todos aquellos símbolos que sean generadores. Aquellas variables que no
+    podamos determinar que son generadoras pasarán a ser símbolos no
+    generadores y se eliminarán.
+    <br />
+    Por definición, todos los símbolos terminales de una gramática son
+    generadores, ya que se generan a sí mismos. <br />
+    También será un símbolo generador toda aquella variable que tenga por lo
+    menos una producción que esté conformada únicamente de símbolos
+    generadores. El string vacío ∅ se considera un símbolo generador. <br />
+    Identifiquemos en nuestra gramática nuestros símbolos generadores: A es
+    generador, ya que tiene la producción A → c. También lo es B, ya que tiene
+    B → b. C y O son generadores, ya que tienen la producción vacía C → ∅ y D
+    → ∅, respectivamente. F tiene la producción F → d. Por último, S tiene la
+    producción S → BCa, donde tanto B, C como a son símbolos generadores, por
+    lo tanto S es generador también. <br />
+    E no es un símbolo generador. Tiene dos producciones, es verdad. Una es E
+    → aaEB y la otra es E → EFG, y en las dos hay presentes símbolos
+    generadores, como por ejemplo a y B en la primera producción y F en la
+    segunda. Pero ninguna de dichas producciones está completamente compuesta
+    por símbolos generadores. Miremos por ejemplo la segunda producción: está
+    presente la variable G, que no tiene ninguna producción asociada, por lo
+    que es incapaz de ser un símbolo generador. Descartamos esta producción
+    entonces. Veamos la primera producción, tal vez descubramos algo: Mmmmh,
+    tiene a la variable E entre medio, la cual todavía no sabemos si es
+    generadora. Qué recursivo, ¿eh? Pues bueno, la recursión llega hasta ahí:
+    No sabemos si E es generador y no hay ninguna otra producción de E que nos
+    ayude a verificar esto, así que la primera producción no nos sirve para
+    determinar a E como un símbolo generador, y como no podemos verificar que
+    E es un símbolo generador. entonces lo consideramos como un símbolo NO
+    generador. Procedemos ahora a eliminar las variables E y G de la gramática
+    y a todas las producciones en las que estén presentes. O sea, eliminamos S
+    → EDF , B → ECd, C → AaE, E → aaEB y E → EF. La gramática queda como
+    sigue:
+  </p>
+  <br />
+  <p>S → A|BCa|aDcd</p>
+  <p>A → aAb|c</p>
+  <p>B → CD|b|Ad</p>
+  <p>C → Cc|Bb|∅</p>
+  <p>D → aDd|Dd|∅</p>
+  <p>F → aFd|d</p>
+  <br />
+  <h4>Eliminando variables no alcanzables</h4>
+  <br />
+  <p>
+    Puede que, desde un principio o por producto de la eliminación de algunos
+    símbolos no generadores, nuestra gramática presente símbolos no
+    alcanzables o, dicho de otras palabras, símbolos que no son deribables
+    (directa o indirectamente) desde el símbolo de inicio S. En nuestro
+    ejemplo particular, nuestra querida variable F sufre de esta injusticia:
+    ya no existe producción que la derive desde el símbolo inicial S, pues
+    dichas producciones se eliminaron cuando estábamos eliminando las
+    variables no generadoras. ¿Qué hacemos entoncés? Somos más injustos aún y
+    la sacamos del grupo también. La gramática nos queda algo así:
+  </p>
+  <br />
+  <p>S → A|BCa|aDcd</p>
+  <p>A → aAb|c</p>
+  <p>B → CD|b|Ad</p>
+  <p>C → Cc|Bb|∅</p>
+  <p>D → aDd|Dd|∅</p>
+  <br />
+  <!-- <p>
+      La gramática nos está quedando cada vez menos poblada, pero no se
+      preocupen que pronto las producciones y las variables van a proliferar en
+      nuestra gramática como conejitos jóvenes y enérgicos.
+    </p> -->
+  <h4>Eliminando variables vacias (∅)</h4>
+  <br />
+  <p>
+    Ahora viene un paso un poco más difícil. La eliminación de producciones ∅
+    consiste principalmente en eliminar las producciones de la forma X → ∅.
+    Cuando uno haga esto, lo que tendrá que hacer es contemplar la posibilidad
+    de que, en donde antes aparecía la variable X, ésta ahora podrá aparecer o
+    no aparecer, ya que en una estará jugando el papel de ser el string vacío
+    y en la otra se estará siendo otra cosa.
+    <br />
+    ¡Ah! ¡Ya estamos listos entonces! Bueno, no del todo: ¿Qué pasa si una
+    variable tiene una producción que está compuesta de varios símbolos que
+    pueden ser reemplazables por el string vacío? Por ejemplo, digamos que
+    tenemos Y→ X1X2X3 ... Xn, donde todos los X; pueden ser el string e,
+    Entonces nos quedaría una cosa así: Y → ∅∅ :... ∅, que se puede
+    simplificar por Y → ∅. Aquí vemos que Y también puede generar al string
+    vacío. Entonces vamos a definir a los símbolos Anulables. Un símbolo
+    anulable Y va a ser aquel que tenga entre sus producciones a la producción
+    Y→ e o también aquel que tenga por lo menos una producción en donde todas
+    las variables involucradas son anulables a su vez. <br />
+    Viendo nuestro ejemplo, podemos identificar rápidamente a dos variables
+    que son símbolos anulables: las variables C y O, ya que ambas tienen la
+    producción de la forma Y → ∅. Pero ojo, que no son las únicas variables
+    anulables. También está B que tiene la producción B → CD, la cual está
+    compuesta enteramente por símbolos anulables. <br />
+    Bien, procedamos a eliminar las producciones ∅. ¿Cómo hacemos esto? Muy
+    fácil: en cada producción en la que estaban presentes uno o más símbolos
+    anulables, vemos todas las combinaciones en las que cada una de dichas
+    variables pudiera estar presente o no. Por ejemplo, si tenemos la
+    producción Y → abX<sub>1</sub>, donde X<sub>1</sub> es anulable, entonces
+    se generan las producciones Y → abX<sub>1</sub> y Y → ab, una en donde
+    X<sub>1</sub> está presente y otra en la que no. Veamos el caso para
+    producciones con dos y tres variables anulables: Y → aX<sub>1</sub>bbX<sub>2</sub>
+    => Y → aX<sub>1</sub>bbX<sub>2</sub> | aX<sub>1</sub>bb | abbX<sub>2</sub> | abb Y →
+    cX<sub>1</sub>X<sub>2</sub>ddX<sub>3</sub>a => Y →
+    cX<sub>1</sub>X<sub>2</sub>ddX<sub>3</sub>a |
+    cX<sub>1</sub>X<sub>2</sub>dda | cX<sub>1</sub>ddX<sub>3</sub>a |
+    cX<sub>2</sub>ddX<sub>3</sub>a | cx.dda | cX,dda | cddX<sub>3</sub>a |
+    cdda En general, si tenemos una producción con n símbolos anulables,
+    tendremos que reemplazar esa producción con a lo más 2<sup>n</sup>
+    producciones. En nuestro caso, la gramática quedaría como sigue:
+  </p>
+  <br />
+  <p>S → A|BCa|Ba|Ca|a|aDcd|acd</p>
+  <p>A → aAb|c</p>
+  <p>B → CD|C|D|b|Ad</p>
+  <p>C → Cc|c|Bb|b</p>
+  <p>D → aDd|ad|Dd|d</p>
+  <br />
+  <h4>Eliminando variables unitarias</h4>
+  <br />
+  <p>
+    Las producciones unitarias son aquellas que tienen una única variable en
+    su cuerpo (ojo!! va-ria- ble!!! símbolos terminales solos no cuentan como
+    producciones unitarias!!). Si tenemos por ejemplo una producción Y → X, la
+    idea es reemplazar esta producción por todas las producciones de X. ¿ Pero
+    qué pasa si X también tiene producciones unitarias? Bueno, entonces
+    primero reemplazamos esas producciones unitarias por sus correspondientes
+    producciones. ¿Y si X tiene la producción unitaria X → Y? Entonces ahí lo
+    que hacemos es primero poner en Y todas las producciones de X menos la
+    producción X → Y, y luego ponemos en X todas las producciones de Y, menos
+    la producción Y → X. Hay una forma más general de describir este proceso,
+    que involucra la definición de los pares unitarios (Y,X), que se definen
+    así:
+    <br />
+    Base: El par (Y, Y) es unitario por definición, para toda variable de una
+    gramática dada. <br />
+    Inducción: Si el par (Y,X) es unitario y la variable X tiene una
+    producción unitaria de la forma X → Z, entonces (Y,Z) también es un par
+    unitario. <br />
+    Nótese que los pares unitarios (X,Y) e (Y,X) son distintos. Lo que se hace
+    a continuación es que por cada par unitario (X,Y), agregamos a las
+    producciones de X todas aquellas producciones de Y que NO son unitarias.
+    En nuestra gramática tenemos los siguientes pares unitarios: (S,S), (S.A),
+    (A.A), (B,B), (B,C), (B,D), (C,C) y (D,D). Los más relevantes de estos
+    pares son (S,A), (8,C) y (B,D). Procedemos a eliminar las producciones
+    unitarias:
+  </p>
+  <br />
+  <p>S → aAb|c|BCa|Ba|Ca|a|aDcd|acd</p>
+  <p>A → aAb|c</p>
+  <p>B → CD|Cc|c|Bb|b|aDd|ad|d|Ad</p>
+  <p>C → Cc|c|Bb|b</p>
+  <p>D → aDd|ad|Dd|d</p>
+  <br />
+  <h3>Forma normal de chomsky</h3>
+  <br />
+  <p>
+    Ya hemos dejado a nuestra gramática inicial en una forma intermedia apta
+    para ser modificada en una FNC. Lo que hacemos a continuación son dos
+    pasos:
+  </p>
+  <br />
+  <h4>Reemplazar terminales por variables</h4>
+  <br />
+  <p>
+    El primer paso consiste en reemplazar todos aquellos símbolos terminales
+    que están acompañados en alguna producción por uno o más símbolos. A estos
+    terminales los reemplazamos por nuevas variables que tendrán una única
+    producción (la producción de dicho símbolo). En nuestro caso, hay que
+    crear 4 nuevas variables, una para cada símbolo terminal:
+  </p>
+  <br />
+  <p>
+    S →
+    A<sub>1</sub>AB<sub>1</sub>|c|BCA<sub>1</sub>|BA<sub>1</sub>|CA<sub>1</sub>|a|A<sub>1</sub>DC<sub>1</sub>D<sub>1</sub>|A<sub>1</sub>C<sub>1</sub>D<sub>1</sub>
+  </p>
+  <p>A → A<sub>1</sub>AB<sub>1</sub>|c</p>
+  <p>
+    B →
+    CD|CC<sub>1</sub>|c|BB<sub>1</sub>|b|A<sub>1</sub>DD<sub>1</sub>|A<sub>1</sub>D<sub>1</sub>|DD<sub>1</sub>|d|AD<sub>1</sub>
+  </p>
+  <p>C → CC<sub>1</sub>|c|BB<sub>1</sub>|b</p>
+  <p>
+    D →
+    A<sub>1</sub>DD<sub>1</sub>|A<sub>1</sub>D<sub>1</sub>|DD<sub>1</sub>|d
+  </p>
+  <p>A<sub>1</sub> → a</p>
+  <p>B<sub>1</sub> → b</p>
+  <p>C<sub>1</sub> → c</p>
+  <p>D<sub>1</sub> → d</p>
+  <br />
+  <h4>Reemplazar produciones de 3 o más variables</h4>
+  <br />
+  <p>
+    El segundo paso consiste en eliminar todas las producciones con 3 o más
+    variables por una que contenga sólo dos. ¿Cómo hacemos esto? Supongamos
+    que tenemos la producción Y → Xα, donde α es un string que consta de dos o
+    más variables. Entonces creamos una nueva variable Z, con la producción Z
+    → α, y luego reemplazamos Y → Xα por Y → XZ. ¿Y si α tiene más de dos
+    variables? Supongamos que α está compuesto por la variable W al principio
+    y por β al final, donde β es a su vez un string que tiene dos o más
+    variables, entonces creamos una variable V con la producción V → β y luego
+    reemplazamos Z → Wα por Z → WV. Repetimos este proceso hasta que ya no
+    queden producciones de 3 o más variables en nuestra gramátiva. En nuestro
+    caso, la gramática queda como sigue:
+  </p>
+  <br />
+  <p>
+    S →
+    A<sub>1</sub>Y<sub>1</sub>|c|BY<sub>2</sub>|BA<sub>1</sub>|CA<sub>1</sub>|a|A<sub>1</sub>Y<sub>3</sub>|A<sub>1</sub>Y<sub>4</sub>
+  </p>
+  <p>Y<sub>1</sub> → AB<sub>1</sub></p>
+  <p>Y<sub>2</sub> → CA<sub>1</sub></p>
+  <p>Y<sub>3</sub> → DY<sub>4</sub></p>
+  <p>Y<sub>4</sub> → C<sub>1</sub>D<sub>1</sub></p>
+  <p>A → A<sub>1</sub>Y<sub>1</sub>|c</p>
+  <p>
+    B →
+    CD|CC<sub>1</sub>|c|BB<sub>1</sub>|b|A<sub>1</sub>Y<sub>5</sub>|A<sub>1</sub>D<sub>1</sub>|DD<sub>1</sub>|d|AD<sub>1</sub>
+  </p>
+  <p>Y<sub>5</sub> → DD<sub>1</sub></p>
+  <p>C → CC<sub>1</sub>|c|BB<sub>1</sub>|b</p>
+  <p>
+    D → A<sub>1</sub>Y<sub>5</sub>|A<sub>1</sub>D<sub>1</sub>|DD<sub>1</sub>|d
+  </p>
+  <p>A<sub>1</sub> → a</p>
+  <p>B<sub>1</sub> → b</p>
+  <p>C<sub>1</sub> → c</p>
+  <p>D<sub>1</sub> → d</p>
+  <br />
+  <h4>Forma intermedia de Greibach</h4>
+  <br />
+  <p>
+    Al igual que con la FNC, una gramática dada debe ser llevada a una forma
+    intermedia antes de poder transformarla a su correspondiente forma normal
+    de Greibach. En el caso de Chomsky, la forma intermedia implicaba eliminar
+    los símbolos inútiles, las producciones e y las producciones unitarias. En
+    el caso de Greibach, la forma intermedia debe cumplir con que todas las
+    producciones sean o strings de una o más variables, o producciones de un
+    solo símbolo terminal, o producciones de un símbolo terminal seguido por
+    una o más variables. Existen muchos métodos para llegar a esta forma
+    intermedia. La que recomienda la mayoría de la gente es la que consiste en
+    obtener la FNC de una gramática. ¿Y por qué? Porque una gramática que esté
+    en FNC cumple con estas tres condiciones de la forma intermedia de
+    Greibach. Realmente, cuando se han reemplazado a los símbolos terminales
+    por variables en el proceso de formalización de Chomsky, ya en ese
+    entonces tenemos una forma intermedia de Greibach. Uno podría elegir
+    también esta gramática como su forma intermedia de Greibach.
+  </p>
+  <br />
+  <h3>Forma normal de Greibach</h3>
+  <br />
+  <p>
+    La forma normal de Greibach de una gramática dada es aquella que sólo
+    contiene producciones de la forma Y → xα, donde x es un terminal y a es un
+    string confonnado únicamente por variables y puede tener largo cero (o
+    sea, puede ser el string vacío). Una vez tenemos nuestra gramática en su
+    forma intermedia, procedemos a aplicarle las siguientes modificaciones,
+    para así obtener su FNG:
+    <br />
+    1. Ordenamos y enumeramos nuestras variables de tal forma que nos quede
+    nuestro símbolo inicial S como la primera variable de la enumeración. La
+    gramática nos quedaría así:
+  </p>
+  <br />
+  <p>
+    S → X<sub>1</sub> →
+    X<sub>11</sub>X<sub>2</sub>|c|X<sub>6</sub>X<sub>3</sub>|X<sub>6</sub>X<sub>11</sub>|a|X<sub>11</sub>X<sub>4</sub>|X<sub>11</sub>X<sub>5</sub>
+  </p>
+  <p>Y<sub>1</sub> → X<sub>2</sub> → X<sub>10</sub>X<sub>12</sub></p>
+  <p>Y<sub>2</sub> → X<sub>3</sub> → X<sub>8</sub>X<sub>11</sub></p>
+  <p>Y<sub>3</sub> → X<sub>4</sub> → X<sub>9</sub>X<sub>5</sub></p>
+  <p>Y<sub>4</sub> → X<sub>5</sub> → X<sub>13</sub>X<sub>14</sub></p>
+  <p>
+    B → X<sub>6</sub> →
+    X<sub>8</sub>X<sub>9</sub>|X<sub>8</sub>X<sub>13</sub>|c|X<sub>6</sub>X<sub>12</sub>|b|X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d|X<sub>10</sub>X<sub>14</sub>
+  </p>
+  <p>Y<sub>5</sub> → X<sub>7</sub> X<sub>9</sub>X<sub>12</sub></p>
+  <p>
+    C → X<sub>8</sub> →
+    X<sub>8</sub>X<sub>13</sub>|c|X<sub>6</sub>X<sub>12</sub>|b
+  </p>
+  <p>
+    D → X<sub>9</sub> →
+    X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d
+  </p>
+  <p>A → X<sub>10</sub> → X<sub>11</sub>X<sub>2</sub>|c</p>
+  <p>A<sub>1</sub> → a</p>
+  <p>B<sub>1</sub> → b</p>
+  <p>C<sub>1</sub> → c</p>
+  <p>D<sub>1</sub> → d</p>
+  <br />
+  <p>
+    Dejamos el símbolo original a la izquierda de cada línea para que se
+    entienda cuál fue la variable enumerada que reemplazó a cada variable.
+    Nótese que cambiamos de orden a la variable A, al ponerla por debajo de la
+    variable D. El propósito de estas alteraciones en el orden original tienen
+    como fin que, al proceder con la enumeración, en las producciones
+    resultantes quede la menor cantidad de producciones X<sub>i</sub> →
+    X<sub>j</sub>α, en donde <sub>i</sub> sea mayor que <sub>j</sub>.
+    <br />
+    2. Eliminamos la recursión inmediata a la izquierda y la recursión a la
+    izquierda. ¿Qué se entiende por recursión inmediata a la izquierda? Cuando
+    tenemos una producción de la forma X → Xα. decimos que X es tiene
+    recursividad inmediara por la izquierda. Cuando tenemos por lo menos una
+    producción de la forma X → Yα, y la variable Y tiene por lo menos una
+    producción de la forma Y → Xβ decimos que X recursividad por la izquierda.
+    ¿ Cómo eliminamos la recursión por la izquierda? Primero reemplazamos en
+    las producciones de X todas las apariciones de Y por aquellas producciones
+    de Y que no sean inmediatamente recursivas a la izquierda para Y. Con esto
+    logramos hacer que X tenga sólo producciones inmediatamente recursivas por
+    la izquierda. Luego, supongamos que X tiene las siguientes producciones:
+  </p>
+  <br />
+  <p>
+    X →
+    Xα<sub>1</sub>|Xα<sub>2</sub>|...|Xα<sub>n</sub>|β<sub>1</sub>|β<sub>2</sub>|...|β<sub>n</sub>
+  </p>
+  <br />
+  <p>
+    Donde las producciones β<sub>1</sub> no son recursivas por la izquierda.
+    Ahora creamos una variables auxiliar X' y realizamos las siguientes
+    transformaciones:
+  </p>
+  <br />
+  <p>
+    X →
+    β<sub>1</sub>|β<sub>2</sub>|...|β<sub>m</sub>|β<sub>1</sub>X'|β<sub>2</sub>X'|...|β<sub>m</sub>X'
+    <br />
+    α<sub>1</sub>|α<sub>2</sub>|...|α<sub>n</sub>|α<sub>1</sub>X'|α<sub>2</sub>X'|...|α<sub>n</sub>X'
+    </p>
+    <br />
+    <p>
+      En nuestro caso, las variables que tienen producciones inmediatamente
+      recursivas por la izquierda son X<sub>6</sub>, X<sub>8</sub> y
+      X<sub>9</sub>, debido a sus producciones X<sub>6</sub> →
+      X<sub>6</sub>X<sub>12</sub>, X<sub>8</sub> → X<sub>8</sub>X<sub>13</sub> y
+      X<sub>9</sub> → X<sub>9</sub>X<sub>14</sub>. También tenemos la producción
+      X<sub>8</sub> X<sub>6</sub>X<sub>12</sub> que es recursiva a la izquierda
+      para la variable X<sub>6</sub>, y las producciones X<sub>6</sub>
+      X<sub>8</sub>X<sub>9</sub> y X<sub>6</sub> X<sub>8</sub><sub>13</sub> que
+      son recursivas a la izquierda para la variable X<sub>8</sub>. Procedemos a
+      dejar a ambas variables únicamente con recursividad inmediata a la
+      izquierda:
+    </p>
+    <br />
+    <p>
+      1. Reemplazando a X<sub>8</sub> por sus producciones no recursivas a la
+      izquierda, las producciones X<sub>6</sub> →
+      X<sub>8</sub>X<sub>9</sub>|X<sub>8</sub>X<sub>13</sub>|c|X<sub>6</sub>X<sub>12</sub>|b|X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d|X<sub>10</sub>X<sub>14</sub>
+      se transforma en: X<sub>6</sub> →
+      cX<sub>9</sub>|X<sub>6</sub>X<sub>12</sub>X<sub>9</sub>|bX<sub>9</sub>|cX<sub>13</sub>|X<sub>6</sub>X<sub>12</sub>X<sub>13</sub>|bX<sub>13</sub>|c|X<sub>6</sub>X<sub>12</sub>|b|X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d|X<sub>10</sub>X<sub>14</sub></sub>
+    </p>
+    <br>
+    <p>
+      Nótese que no reemplazamos a X<sub>8</sub> por su producción X<sub>8</sub> → X<sub>8</sub>X<sub>13</sub> porque es
+      recursiva a la izquierda para X<sub>8</sub>.
+    </p>
+    <br />
+    <p>
+      2. Reemplazando a X<sub>6</sub> por sus producciones no recursivas a la
+      izquierda, las producciones X<sub>0</sub> → X<sub>0</sub>X<sub>13</sub>|c|X<sub>6</sub>X<sub>12</sub>|b se
+      transforma en:
+      <br> X<sub>8</sub> →
+      X<sub>9</sub>X<sub>13</sub>|c|X<sub>8</sub>X<sub>9</sub>X<sub>12</sub>|X<sub>8</sub>X<sub>13</sub>X<sub>12</sub>|cX<sub>12</sub>|bX<sub>12</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>12</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>12</sub>|b
+    </p>
+    <br>
+    <p>
+      Aquí tampoco reemplazamos a X<sub>6</sub> por su producción X<sub>6</sub> → X<sub>6</sub>X<sub>12</sub>, ya que esta
+      producción es recursiva por la izquierda para X5. Ahora que solamente tenemos recursividad inmediata por la
+      izquierda, procedemos a realizar las correspondientes transformaciones:
+    </p>
+    <br>
+    <p>
+      1) Las producciones X<sub>6</sub> →
+      cX<sub>9</sub>|X<sub>6</sub>X<sub>12</sub>X<sub>9</sub>|bX<sub>9</sub>|cX<sub>13</sub>|X<sub>6</sub>X<sub>12</sub>X<sub>13</sub>|bX<sub>13</sub>|c|X<sub>6</sub>X<sub>12</sub>|b|X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d|X<sub>10</sub>X<sub>14</sub>
+      se transforma en:
+    </p>
+    <br>
+    <p>
+      X<sub>6</sub> →
+      cX<sub>9</sub>|bX<sub>9</sub>|cX<sub>13</sub>|bX<sub>13</sub>|c|b|X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>11</sub>|d|X<sub>10</sub>X<sub>14</sub>|cX<sub>9</sub>X<sub>6.1</sub>|cX<sub>13</sub>X<sub>6.1</sub>bX<sub>13</sub>X<sub>6.1</sub>|cX<sub>6.1</sub>|bX<sub>8.1</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>6.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>6.1</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>6.1</sub>|dX<sub>6.1</sub>|X<sub>10</sub>X<sub>11</sub>X<sub>6.1</sub>
+      <br>
+      X<sub>6.1</sub> →
+      X<sub>12</sub>X<sub>9</sub>|X<sub>12</sub>X<sub>13</sub>|X<sub>12</sub>|X<sub>12</sub>X<sub>9</sub>X<sub>6.1</sub>|X<sub>12</sub>X<sub>13</sub>X<sub>6.1</sub>|X<sub>12</sub>X<sub>6.1</sub>
+    </p>
+    <br>
+    <p>
+      2) Las produciones X<sub>8</sub> →
+      X<sub>8</sub>X<sub>13</sub>|c|X<sub>8</sub>X<sub>9</sub>X<sub>12</sub>|X<sub>8</sub>X<sub>13</sub>X<sub>12</sub>|cX<sub>12</sub>|bX<sub>12</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>12</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>12</sub>|b
+      se transforma en:
+    </p>
+    <br>
+    <p>
+      X<sub>8</sub> →
+      c|cX<sub>12</sub>|bX<sub>12</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>12</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>12</sub>|b|cX<sub>8.1</sub>|cX<sub>12</sub>X<sub>8.1</sub>|bX<sub>12</sub>X<sub>8.1</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>12</sub>X<sub>8.1</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|bX<sub>8.1</sub>
+      <br>
+      X<sub>8.1</sub> →
+      X<sub>13</sub>|X<sub>9</sub>X<sub>12</sub>|X<sub>13</sub>X<sub>12</sub>|X<sub>13</sub>X<sub>8.1</sub>|X<sub>9</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>13</sub>X<sub>12</sub>X<sub>8.1</sub>
+    </p>
+    <br>
+    <p>
+      3) Y las producciones X<sub>9</sub>
+      X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d se transforman en :
+    </p>
+    <br>
+    <p>
+      X<sub>9</sub> →
+      X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|d|X<sub>11</sub>X<sub>7</sub>X<sub>9.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>9.1</sub>|dX<sub>9.1</sub>
+      <br>
+      X<sub>9.1</sub> → X<sub>14</sub>|X<sub>14</sub>X<sub>9.1</sub>
+    </p>
+    <br>
+    <p>
+      Nuestra gramatica, libre de recursividad por la izquierda, queda como sigue:
+    </p>
+    <br>
+    <p>
+      X<sub>1</sub> →
+      X<sub>11</sub>X<sub>2</sub>|c|X<sub>6</sub>X<sub>11</sub>|X<sub>8</sub>X<sub>11</sub>|a|X<sub>11</sub>X<sub>4</sub>|X<sub>11</sub>X<sub>5</sub>
+      <br>
+      X<sub>2</sub> → X<sub>10</sub>X<sub>12</sub>
+      <br>
+      X<sub>3</sub> → X<sub>9</sub>X<sub>11</sub>
+      <br>
+      X<sub>4</sub> → X<sub>9</sub>X<sub>5</sub>
+      <br>
+      X<sub>5</sub> → X<sub>13</sub>X<sub>14</sub>
+      <br>
+      X<sub>6</sub> →
+      cX<sub>9</sub>|bX<sub>9</sub>|cX<sub>13</sub>|bX<sub>13</sub>|c|b|X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|X<sub>9</sub>X<sub>14</sub>|d|X<sub>10</sub>X<sub>14</sub>|cX<sub>9</sub>X<sub>6.1</sub>|bX<sub>9</sub>X<sub>6.1</sub>|bX<sub>13</sub>X<sub>6.1</sub>|cX<sub>6.1</sub>|bX<sub>6.1</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>6.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>6.1</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>6.1</sub>|dX<sub>6.1</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>6.1</sub>
+      <br>
+      X<sub>6.1</sub> →
+      X<sub>12</sub>X<sub>9</sub>|X<sub>12</sub>X<sub>13</sub>|X<sub>12</sub>|X<sub>12</sub>X<sub>9</sub>X<sub>6.1</sub>|X<sub>12</sub>X<sub>13</sub>X<sub>6.1</sub>|X<sub>12</sub>X<sub>6.1</sub>
+      <br>
+      X<sub>7</sub> → X<sub>9</sub>X<sub>12</sub>
+      <br>
+      X<sub>8</sub> →
+      c|cX<sub>12</sub>|bX<sub>12</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>12</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>12</sub>|b|cX<sub>8.1</sub>|cX<sub>12</sub>X<sub>8.1</sub>|bX<sub>12</sub>X<sub>8.1</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>9</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>12</sub>X<sub>8.1</sub>|X<sub>10</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|bX<sub>8.1</sub>
+      <br>
+      X<sub>8.1</sub> →
+      X<sub>13</sub>|X<sub>9</sub>X<sub>12</sub>|X<sub>13</sub>X<sub>12</sub>|X<sub>13</sub>X<sub>8.1</sub>|X<sub>9</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>13</sub>X<sub>12</sub>X<sub>8.1</sub>
+      <br>
+      X<sub>9</sub> →
+      X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|d|X<sub>11</sub>X<sub>7</sub>X<sub>9.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>9.1</sub>|dX<sub>9.1</sub>
+      <br>
+      X<sub>9.1</sub> → X<sub>14</sub>|X<sub>14</sub>X<sub>9.1</sub>
+      <br>
+      X<sub>10</sub> → X<sub>11</sub>X<sub>2</sub>|c
+      <br>
+      X<sub>11</sub> → a
+      <br>
+      X<sub>12</sub> → b
+      <br>
+      X<sub>13</sub> → c
+      <br>
+      X<sub>14</sub> → d
+    </p>
+    <br>
+    <p>
+      3. En nuestro tercer paso, eliminaremos todas las producciones de la forma X<sub>i</sub> → X<sub>j</sub>a, en donde
+      <sub>i</sub> es mayor que <sub>j</sub>. Para hacer esto, reemplararemos a X<sub>i</sub> por todas sus producciones. Si
+      al reemplazar aparecen otras producciones de esta forma, repetimos este paso, hasta que no queden más producciones en
+      donde la primera variable de la producción tenga un índice menor al de la variable de la cabeza de la producción. En
+      nuestro caso, no hay ninguna producción de este tipo, pero vamos a mostrar unas producciones de ejemplo para ilustrar
+      el proceso:
+    </p>
+    <br>
+    <p>
+      X<sub>9</sub> →
+      X<sub>11</sub>X<sub>7</sub>|X<sub>11</sub>X<sub>14</sub>|d|X<sub>11</sub>X<sub>7</sub>X<sub>9.1</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>9.1</sub>|dX<sub>9.1</sub>
+      <br>
+      X<sub>10</sub> → X<sub>11</sub>X<sub>2</sub>|c|X<sub>9</sub>X<sub>11</sub>X<sub>6</sub>
+    </p>
+    <br>
+    <p>
+      En este ejemplo, tenemos la producción X<sub>10</sub> → X<sub>9</sub>X<sub>11</sub>X<sub>6</sub> en la que la variable
+      de la izquierda de la producción (X<sub>9</sub>) tiene un índice menor al de la variable de la cabeza de la producción
+      (X<sub>10</sub>). Reemplazando
+      X<sub>9</sub> por sus correspondientes producciones nos queda:
+    </p>
+    <br>
+    <p>
+      X<sub>10</sub> →
+      X<sub>11</sub>X<sub>2</sub>|c|X<sub>11</sub>X<sub>7</sub>X<sub>11</sub>X<sub>6</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>11</sub>X<sub>6</sub>|dX<sub>11</sub>X<sub>6</sub>|X<sub>11</sub>X<sub>7</sub>X<sub>9.1</sub>X<sub>11</sub>|X<sub>6</sub>|X<sub>11</sub>X<sub>14</sub>X<sub>9.1</sub>X<sub>11</sub>X<sub>6</sub>|dX<sub>9-1</sub>X<sub>11</sub>X<sub>6</sub>
+    </p>
+    <br>
+  <p>
+    4. En el último paso. reemplazamos todas las producciones en las que haya una variable al principio de la producción
+    (no importa el índice que tenga) por las producciones de dicha variable que empiecen con algún símbolo terminal. Este
+    proceso se realiza empezando por las últimas variables de la gramática y luego se continúa el proceso de reemplazo
+    hacia arriba hasta llegar a las producciones de la variable de inicio. En nuestra gramática, partiríamos con las
+    producciones de la variable X10 (ya que X11, X12, X13 y X14 tienen producciones en las que sólo hay involucrados
+    símbolos terminales). La cosa nos quedaría así:
+    X<sub>10</sub> → X<sub>11</sub>X<sub>2</sub>|e => X<sub>10</sub> → aX<sub>2</sub> | c
+    Luego continuaríamos con X<sub>9.1</sub>:
+    X<sub>9.1</sub> → X<sub>14</sub>|X<sub>14</sub>X<sub>9.1</sub> => X<sub>9.1</sub> → d|dX<sub>9.1</sub>
+  </p>
+  <br>
+  <p>
+    El proceso no presenta mayor dificultad, hasta que llegamos a X<sub>8.1</sub>, en donde aparecen las producciones
+    X<sub>8.1</sub> → X<sub>9</sub>X<sub>12</sub> y X<sub>8.1</sub> - X<sub>9</sub>X<sub>12</sub>X<sub>8.1</sub>, que no
+    comienzan con X<sub>11</sub>, X<sub>12</sub>, X<sub>13</sub> o X<sub>14</sub>. Pero no importa, ya que todas las
+    producciones de X<sub>9</sub> para estas alturas del proceso han sido modificadas para que empiecen con un símbolo
+    terminal, así que reemplazamos X<sub>9</sub> directamente con sus producciones:
+    Esto:
+    <br>
+    X<sub>8.1</sub> →
+    X<sub>13</sub>|X<sub>9</sub>X<sub>12</sub>|X<sub>13</sub>X<sub>12</sub>|X<sub>13</sub>X<sub>8.1</sub>|X<sub>9</sub>X<sub>12</sub>X<sub>8.1</sub>|X<sub>13</sub>X<sub>12</sub>X<sub>8.1</sub>
+    Queda como esto:
+    <br>
+    X<sub>8.1</sub> →
+    c|aX<sub>7</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>12</sub>|dX<sub>9.1</sub>X<sub>12</sub>|cX<sub>12</sub>|cX<sub>8.1</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>12</sub>X<sub>8.1</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>12</sub>X<sub>8.1</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>9.1</sub>X<sub>12</sub>X<sub>8.1</sub>|cX<sub>12</sub>X<sub>8.1</sub>
+  </p>
+  <br>
+  <p>
+    El proceso continúa así sin mayores complicaciones, hasta que llegamos a la siguietne gramatica en forma normal de
+    Greibach:
+  </p>
+  <br>
+  <p>
+    X<sub>1</sub> → aX<sub>2</sub>|c|cX<sub>9</sub>X<sub>3</sub>|cX<sub>13</sub>X<sub>3</sub>|cX<sub>3</sub>|bX<sub>3</sub>|aX<sub>7</sub>X<sub>3</sub>|aX<sub>14</sub>X<sub>3</sub>|aX<sub>7</sub>|X<sub>14</sub>X<sub>3</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>3</sub>|dX<sub>14</sub>X<sub>3</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>3</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>3</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>3</sub>|dX<sub>3</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>3</sub>|cX<sub>14</sub>X<sub>3</sub>|cX<sub>9</sub>X<sub>6.1</sub>X<sub>3</sub>|bX<sub>9</sub>X<sub>6.1</sub>X<sub>3</sub>|cX<sub>13</sub>X<sub>6.1</sub>X<sub>3</sub>|bX<sub>13</sub>X<sub>6.1</sub>X<sub>3</sub>|cX<sub>6.1</sub>X<sub>3</sub>|bX<sub>6.1</sub>X<sub>3</sub>|aX<sub>7</sub>X<sub>6.1</sub>X<sub>3</sub>|aX<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|aX<sub>7</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|dX<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|dX<sub>6.1</sub>X<sub>3</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|cX<sub>14</sub>X<sub>6.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>3</sub>|cX<sub>9</sub>X<sub>11</sub>|bX<sub>9</sub>X<sub>11</sub>|cX<sub>13</sub>X<sub>11</sub>|bX<sub>13</sub>X<sub>11</sub>|cX<sub>11</sub>|bX<sub>11</sub>|aX<sub>7</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>14</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>11</sub>|dX<sub>14</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>11</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>11</sub>|dX<sub>11</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>11</sub>|cX<sub>14</sub>X<sub>11</sub>|cX<sub>9</sub>X<sub>6.1</sub>X<sub>11</sub>|bX<sub>9</sub>X<sub>6.1</sub>X<sub>11</sub>|cX<sub>13</sub>X<sub>6.1</sub>X<sub>11</sub>|cX<sub>6.1</sub>X<sub>11</sub>|bX<sub>6.1</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>6.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|dX<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|dX<sub>6.1</sub>X<sub>11</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|cX<sub>14</sub>X<sub>6.1</sub>X<sub>14</sub>X<sub>6.1</sub>X<sub>11</sub>|cX<sub>11</sub>|cX<sub>12</sub>X<sub>11</sub>|bX<sub>12</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>dX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|dX<sub>12</sub>X<sub>11</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|cX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|bX<sub>11</sub>|cX<sub>9.1</sub>X<sub>11</sub>|cX<sub>12</sub>X<sub>9.1</sub>X<sub>11</sub>|bX<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|dX<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|cX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|bX<sub>8.1</sub>X<sub>11</sub>|a|aX<sub>4</sub>|aX<sub>5</sub>
+    <br>
+    X<sub>2</sub> → aX<sub>2</sub>X<sub>12</sub>|cX<sub>12</sub>
+    <br>
+    X<sub>3</sub> → cX<sub>11</sub>|cX<sub>12</sub>X<sub>11</sub>|bX<sub>12</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|dX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|dX<sub>12</sub>X<sub>11</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|cX<sub>14</sub>X<sub>12</sub>X<sub>11</sub>|bX<sub>11</sub>|cX<sub>8.1</sub>X<sub>11</sub>|cX<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|bX<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|dX<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>X<sub>11</sub>|cX<sub>15</sub>X<sub>12</sub>X<sub>8.1</sub>|bX<sub>8.1</sub>X<sub>11</sub>
+    <br>
+    X<sub>4</sub> → aX<sub>7</sub>X<sub>5</sub>|aX<sub>14</sub>X<sub>5</sub>|dX<sub>5</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>5</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>5</sub>|dX<sub>9.1</sub>X<sub>5</sub>
+    <br>
+    X<sub>5</sub> → cX<sub>14</sub>
+    <br>
+    X<sub>6</sub> → cX<sub>9</sub>|bX<sub>9</sub>|cX<sub>13</sub>|bX<sub>13</sub>|c|b|aX<sub>7</sub>|aX<sub>14</sub>|aX<sub>7</sub>X<sub>14</sub>|aX<sub>14</sub>X<sub>14</sub>|dX<sub>14</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>|dX<sub>9.1</sub>X<sub>14</sub>|d|aX<sub>2</sub>X<sub>14</sub>|cX<sub>14</sub>|cX<sub>9</sub>X<sub>6.1</sub>|bX<sub>9</sub>X<sub>6.1</sub>|cX<sub>13</sub>X<sub>6.1</sub>|cX<sub>6.1</sub>|bX<sub>6.1</sub>|aX<sub>7</sub>X<sub>6.1</sub>|aX<sub>14</sub>X<sub>6.1</sub>|aX<sub>7</sub>X<sub>14</sub>X<sub>6.1</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>6.1</sub>|dX<sub>14</sub>X<sub>6.1</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>6.1</sub>|dX<sub>6.1</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>8.1</sub>|cX<sub>14</sub>X<sub>6.1</sub>X<sub>14</sub>X<sub>6.1</sub>
+    <br>
+    X<sub>6.1</sub> → bX<sub>9</sub>|bX<sub>13</sub>|b|bX<sub>9</sub>X<sub>6.1</sub>|bX<sub>13</sub>X<sub>6.1</sub>|bX<sub>6.1</sub>
+    <br>
+    X<sub>7</sub> → aX<sub>7</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>12</sub>|dX<sub>9.1</sub>X<sub>12</sub>
+    <br>
+    X<sub>8</sub> → c|cX<sub>12</sub>|bX<sub>12</sub>|aX<sub>7</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>12</sub>|aX<sub>7</sub>X<sub>7</sub>X<sub>14</sub>|aX<sub>14</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>14</sub>X<sub>12</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>9.1</sub>X<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>12</sub>|cX<sub>14</sub>X<sub>12</sub>|b|cX<sub>8.1</sub>|cX<sub>12</sub>X<sub>8.1</sub>|bX<sub>12</sub>X<sub>8.1</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>12</sub>X<sub>8.1</sub>|aX<sub>2</sub>X<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|cX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|bX<sub>8.1</sub>
+    <br>
+    X<sub>8.1</sub> → c|aX<sub>7</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>12</sub>|dX<sub>12</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>12</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>12</sub>|dX<sub>9.1</sub>X<sub>12</sub>|cX<sub>12</sub>|cX<sub>8.1</sub>|aX<sub>7</sub>X<sub>12</sub>X<sub>8.1</sub>|aX<sub>14</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>12</sub>X<sub>8.1</sub>|aX<sub>7</sub>X<sub>9.1</sub>X<sub>12</sub>X<sub>8.1</sub>|aX<sub>14</sub>X<sub>9.1</sub>X<sub>12</sub>X<sub>8.1</sub>|dX<sub>9.1</sub>X<sub>12</sub>X<sub>8.1</sub>|cX<sub>12</sub>X<sub>8.1</sub>
+    <br>
+    X<sub>9</sub> → aX<sub>7</sub>|aX<sub>14</sub>|d|aX<sub>7</sub>X<sub>9.1</sub>|aX<sub>14</sub>X<sub>9.1</sub>|dX<sub>9.1</sub>
+    <br>
+    X<sub>9.1</sub> → d|dX<sub>9.1</sub>
+    <br>
+    X<sub>10</sub> → aX<sub>2</sub>|C
+    <br>
+    X<sub>11</sub> → a
+    <br>
+    X<sub>12</sub> → b
+    <br>
+    X<sub>13</sub> → c
+    <br>
+    X<sub>14</sub> → d
+  </p>
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+</body>
+<footer>
+  <a href="Ejercicio-FNC-FNG.pdf" download>
+  <input type="button" class="btn btn-dark" value="Descargar documento">
+  </a>
+</footer>
+</html>

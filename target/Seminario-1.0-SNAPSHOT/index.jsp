@@ -8,7 +8,7 @@
 <%@page import="modelo.Palabra"%>
 <%@page import="controlador.Normalizacion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link href="../../../../../Seminario II/Segunda Entrega/unoCero (1)/unoCero/css/index.css" rel="stylesheet" type="text/css"/>
+<link href="../../../../../Seminario II/Segunda Entrega/unoCero(1)/unoCero/css/index.css"rel="stylesheet"type="text/css"/>
 <jsp:useBean id="negocio" class="controlador.Normalizacion" scope="session"></jsp:useBean>
 <% 
 
@@ -83,7 +83,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="#contact" class="nav-link smoothScroll">Greibach</a>
+                        <a href="#gleibash" class="nav-link smoothScroll">Greibach</a>
                     </li>
 
                     <li class="nav-item">
@@ -232,7 +232,7 @@
                     <div class="row">
                         <div class="d-flex mt-3">
                             <p class="">Pueder normalizar la gramatica que quieras aqui</p>
-                            <button class="btn btn-primary">Ejercicio</button>
+                            <a href="ejercicio.html" class="btn btn-primary">Ejercicio</a>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@
                     <div class="row">
                         <div class="d-flex mt-3">
                             <p class="">Pueder normalizar la gramatica que quieras aqui</p>
-                            <button class="btn btn-primary">Ejercicio</button>
+                            <a href="ejercicio.html" class="btn btn-primary">Ejercicio</a>
                         </div>
                     </div>
                 </div>
@@ -282,7 +282,49 @@
 
         </div>
     </section>
+    
+    <section class="about section vh-100 vw-100" id="gleibash">
+        <div class="container">
 
+            <div class="row text-dark dflex justify-content-center mb-4">
+                <h2>Greibach</h2>
+            </div>
+
+            <div class="row">
+                
+                <div class="col-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Greibach</h5>
+                            <p class="card-text">
+                                La forma normal de Greibach de una gramática dada es aquella que sólo contiene
+                                producciones de la forma.<br><br> Y --> x --> P --> 1QR2<br><br>donde<br><br>x es un terminal<br> 
+                                es un string conformado únicamente por variablesy puede ser vacio
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8">
+                    <div class="row">
+                        <iframe class="w-100" height="400" src="https://www.youtube.com/embed/Jcr_3z8WbcA"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex mt-3">
+                            <p class="">Ejemplo de Greibach</p>
+                            <a href="ejercicio.html" class="btn btn-primary">Ejercicio</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    
     <!-- Ejercicio -->
     <section class="about section vh-100 vw-100" id="ejercicio">
         <div class="container">
@@ -313,7 +355,7 @@
                                 
                                 <div class="form-group">
                                     <label for="producciones" class="form-label">Sigma: </label>
-                                    <input type="text" name="producciones" id="producciones" placeholder="Digite las Producciones" required class="form-control" value="<%= sigma!=null?sigma:"" %>">
+                                    <input type="text" name="producciones" id="producciones" placeholder="Digite las Producciones" required class="form-control" value="<%= sigma!=null?sigma:"" %>">                                
                                 </div>
                                 
                                 <div class="form-group">

@@ -5,4 +5,5 @@ controlador\EliminarVariablesInalcanzables.class
 controlador\EliminarVariablesNulas.class
 controlador\Normalizacion.class
 modelo\Palabra.class
+controlador\AplicarChomsky.class
 modelo\Gramatica.class
