@@ -36,6 +36,8 @@ public class EliminarVariablesInutiles extends HttpServlet {
         Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
         
+        int cont = (int) (request.getSession().getAttribute("contador")!=null? request.getSession().getAttribute("contador") : 0);
+        
         if(normalizacion!=null && gramatica!=null){
             
             System.out.println("//////////////////////////////////////////////////////////////////");
@@ -48,10 +50,12 @@ public class EliminarVariablesInutiles extends HttpServlet {
             while(normalizacion.existenInutiles(gramatica)){
                 normalizacion.eliminarInutiles(gramatica);
             }
+            cont++;
         }
         
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
+        request.getSession().setAttribute("contador", cont);
         
         request.getRequestDispatcher("./index.jsp").forward(request, response);
         

@@ -24,6 +24,26 @@
         <servlet-name>AplicarChomsky</servlet-name>
         <servlet-class>controlador.AplicarChomsky</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CrearVariablesGreybatch</servlet-name>
+        <servlet-class>controlador.CrearVariablesGreybatch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarRecursividadIzquierda</servlet-name>
+        <servlet-class>controlador.EliminarRecursividadIzquierda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarRecursividadInmediataIzquierda</servlet-name>
+        <servlet-class>EliminarRecursividadInmediataIzquierda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Cancelar</servlet-name>
+        <servlet-class>controlador.Cancelar</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CancelarOperation</servlet-name>
+        <servlet-class>controlador.CancelarOperation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GuardarGramatica</servlet-name>
         <url-pattern>/GuardarGramatica.do</url-pattern>
@@ -47,6 +67,26 @@
     <servlet-mapping>
         <servlet-name>AplicarChomsky</servlet-name>
         <url-pattern>/AplicarChomsky.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CrearVariablesGreybatch</servlet-name>
+        <url-pattern>/CrearVariablesGreybatch.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarRecursividadIzquierda</servlet-name>
+        <url-pattern>/EliminarRecursividadIzquierda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarRecursividadInmediataIzquierda</servlet-name>
+        <url-pattern>/EliminarRecursividadInmediataIzquierda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Cancelar</servlet-name>
+        <url-pattern>/Cancelar.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelarOperation</servlet-name>
+        <url-pattern>/CancelarOperation.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

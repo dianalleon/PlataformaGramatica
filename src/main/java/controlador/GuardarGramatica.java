@@ -37,6 +37,8 @@ public class GuardarGramatica extends HttpServlet {
         Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
         
+        int cont = (int) (request.getSession().getAttribute("contador")!=null? request.getSession().getAttribute("contador") : 0);
+        
         if(normalizacion==null){
             normalizacion = new Normalizacion();
         }
@@ -57,12 +59,14 @@ public class GuardarGramatica extends HttpServlet {
             System.out.println(""+gramatica.toString());
             //System.out.println("sigma="+gramatica.sigmaToString());
             System.out.println("//////////////////////////////////////////////////////////////////");
+            cont++;
         }
         
         
         //request.getSession().setAttribute("sigma", gramatica.getSigma().toString());
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
+        request.getSession().setAttribute("contador", cont);
         
         
         

@@ -1,9 +1,9 @@
 controlador\EliminarVariablesUnitarias.class
-controlador\EliminarVariablesInutiles.class
 controlador\GuardarGramatica.class
-controlador\EliminarVariablesInalcanzables.class
-controlador\EliminarVariablesNulas.class
 controlador\Normalizacion.class
 modelo\Palabra.class
 controlador\AplicarChomsky.class
+controlador\EliminarVariablesInutiles.class
+controlador\EliminarVariablesInalcanzables.class
+controlador\EliminarVariablesNulas.class
 modelo\Gramatica.class

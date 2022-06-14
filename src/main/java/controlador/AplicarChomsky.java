@@ -34,6 +34,8 @@ public class AplicarChomsky extends HttpServlet {
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
         String alert = null;
         
+        int cont = (int) (request.getSession().getAttribute("contador")!=null? request.getSession().getAttribute("contador") : 0);
+        
         if(normalizacion!=null && gramatica!=null) {
             if(normalizacion.existenInutiles(gramatica))
                 alert = "Aún existen variables inutiles";
@@ -45,6 +47,8 @@ public class AplicarChomsky extends HttpServlet {
                 alert = "Aún existen variables Unitarias";
             else {
                 gramatica = normalizacion.aplicarChomsky(gramatica);
+                request.getSession().setAttribute("chomskyAplicado", "1");
+                cont++;
             }
         } 
         else
@@ -80,6 +84,8 @@ public class AplicarChomsky extends HttpServlet {
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
         request.setAttribute("message", alert);
+        request.getSession().setAttribute("contador", cont);
+        
         request.getRequestDispatcher("./index.jsp").forward(request, response);
     }
 

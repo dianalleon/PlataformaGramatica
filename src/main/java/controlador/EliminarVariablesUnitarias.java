@@ -37,15 +37,19 @@ public class EliminarVariablesUnitarias extends HttpServlet {
         Normalizacion normalizacion = (Normalizacion) request.getSession().getAttribute("normalizacion");
         Gramatica gramatica = (Gramatica) request.getSession().getAttribute("gramatica");
         
+        int cont = (int) (request.getSession().getAttribute("contador")!=null? request.getSession().getAttribute("contador") : 0);
+        
         
         if(normalizacion!=null && gramatica!=null){
             while(normalizacion.existenUnitarias(gramatica)){
                 normalizacion.eliminarUnitarias(gramatica);
             }
+            cont++;
         }
         
         request.getSession().setAttribute("gramatica", gramatica);
         request.getSession().setAttribute("normalizacion", normalizacion);
+        request.getSession().setAttribute("contador", cont);
         
         request.getRequestDispatcher("./index.jsp").forward(request, response);
         

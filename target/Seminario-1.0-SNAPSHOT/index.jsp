@@ -27,6 +27,13 @@
                         " H->BCD1/2";
     String alert = (String) request.getAttribute("message");
     System.out.println(":::index.jsp -> Alert= "+alert);
+
+    String chomskyAplicado = (String) request.getSession().getAttribute("chomskyAplicado")!= null ? "1":"0";
+    System.out.println(":::index.jsp -> chomskyAplicado= "+chomskyAplicado);
+    int cont = (int) (request.getSession().getAttribute("contador")!=null?request.getSession().getAttribute("contador"):0);
+
+    System.out.println(":::index.jsp -> cont= "+cont);
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -359,11 +366,16 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <input type="submit" value="Guardar Gramatica" class="btn btn-success">
-                                    <input type="button" value="Cancelar" onclick="location.href='#home'" class="btn btn-success">                       
+                                    <input type="submit" value="Guardar Gramatica" class="btn btn-success" <%=cont!=0?"disabled":""%> >
+                                                         
                                 </div>
 
                             </form>
+
+                            <form action="CancelarOperation.do" method="post" >
+                                <input type="submit" value="Cancelar" class="btn btn-success">  
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -388,25 +400,41 @@
 
                 <div class="col-2 ">
                 
-                    <form action="EliminarVariablesInutiles.do" method="post">
-                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inutiles">
+                    <form action="EliminarVariablesInutiles.do" method="post" >
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inutiles" <%=cont!=1?"disabled":""%>  >
                     </form>
 
-                    <form action="EliminarVariablesInalcanzables.do" method="post">
-                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inalcanzables">
+                    <form action="EliminarVariablesInalcanzables.do" method="post" >
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Inalcanzables" <%=cont!=2?"disabled":""%> >
                     </form>
 
-                    <form action="EliminarVariablesNulas.do" method="post">
-                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Nulas">
+                    <form action="EliminarVariablesNulas.do" method="post" >
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Nulas" <%=cont!=3?"disabled":""%> >
                     </form>
 
-                    <form action="EliminarVariablesUnitarias.do" method="post">
-                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Unitarias">
+                    <form action="EliminarVariablesUnitarias.do" method="post"  >
+                        <input type="submit" class="btn btn-primary d-block" value="Eliminar variables Unitarias" <%=cont!=4?"disabled":""%> >
                     </form>
 
-                    <form action="AplicarChomsky.do" method="post">
-                        <input type="submit" class="btn btn-primary d-block" value="Aplicar Chomsky">
+                    <form action="AplicarChomsky.do" method="post"  >
+                        <input type="submit" class="btn btn-primary d-block" value="Aplicar Chomsky" <%=cont!=5?"disabled":""%> >
                     </form>
+
+                    <div <%=(chomskyAplicado!=null&&chomskyAplicado=="0"?"hidden":"")%> >
+                    
+                        <form action="CrearVariablesGreybatch.do" method="post"  >
+                            <input type="submit" class="btn btn-primary d-block" value="Crear Variables de Greybatch" <%=cont!=6?"disabled":""%> >
+                        </form>
+
+                        <form action="EliminarRecursividadIzquierda.do" method="post"  >
+                            <input type="submit" class="btn btn-primary d-block" value="Eliminar Recursividad Izquierda"  <%=cont!=7?"disabled":""%> >
+                        </form>
+
+                        <form action="EliminarRecursividadInmediataIzquierda.do" method="post"  >
+                            <input type="submit" class="btn btn-primary d-block" value="Eliminar Recursividad Inmediata Izquierda" <%=cont!=8?"disabled":""%> >
+                        </form>
+
+                    </div>
                 
                 </div>
 
